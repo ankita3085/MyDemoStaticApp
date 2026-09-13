@@ -1,0 +1,12 @@
+/* Minimal styles for the demo static site */
+:root{font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+body{margin:0;padding:1.5rem;background:#f7f7fb;color:#111}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+nav a{margin-left:0.75rem;color:#0366d6;text-decoration:none}
+nav a:hover{text-decoration:underline}
+main{background:#fff;padding:1rem;border-radius:6px;box-shadow:0 1px 3px rgba(16,24,40,0.06)}
+footer{margin-top:1rem;font-size:0.85rem;color:#666}
+.type{font-family: 'Courier New', Courier, monospace;font-size:1.1rem;padding:0.5rem 0}
+button{margin-right:0.5rem;padding:0.4rem 0.6rem;border-radius:4px;border:1px solid #ccc;background:#fff}
+button:hover{cursor:pointer}
+@media (max-width:600px){body{padding:0.75rem}}
