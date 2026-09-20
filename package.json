@@ -1,0 +1,12 @@
+{
+  "name": "mydemostaticapp-resume-parser",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Resume parser helper for Ankita profile site",
+  "scripts": {
+    "parse-resume": "node scripts/parseResume.js"
+  },
+  "dependencies": {
+    "mammoth": "^1.4.19"
+  }
+}
