@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ankita — Profile</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="index.html">Ankita</a>
+        </div>
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="avatar-wrap">
+            <!-- simple SVG avatar placeholder -->
+            <svg class="avatar" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#7b61ff" />
+                  <stop offset="100%" stop-color="#00c2ff" />
+                </linearGradient>
+              </defs>
+              <rect width="120" height="120" rx="16" fill="url(#g1)" />
+              <g transform="translate(20,18)" fill="#fff">
+                <circle cx="40" cy="28" r="18" opacity="0.95" />
+                <path d="M8 96c0-22 24-40 32-40s32 18 32 40" fill-opacity="0.9" />
+              </g>
+            </svg>
+          </div>
+
+          <div class="hero-content">
+            <h1 class="name">Ankita T Lakdawala</h1>
+            <p class="role"><span id="typed"></span><span class="cursor">|</span></p>
+            <p class="lead">8+ years .NET developer experienced in building cloud-ready web applications with .NET Core, Azure, and modern front-end frameworks.</p>
+
+            <div class="stats" aria-hidden>
+              <div class="stat">
+                <div class="num" data-target="8">0</div>
+                <div class="label">Years</div>
+              </div>
+              <div class="stat">
+                <div class="num" data-target="20">0</div>
+                <div class="label">Projects</div>
+              </div>
+              <div class="stat">
+                <div class="num" data-target="8">0</div>
+                <div class="label">Clients</div>
+              </div>
+            </div>
+
+            <p class="cta">
+              <a class="btn" href="#contact">Say hello</a>
+              <a class="btn ghost" href="updated one Ankita-.Net.docx" download>Download Resume</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="container about">
+        <h2>About</h2>
+        <p>Hi — I'm Ankita T Lakdawala, a .NET developer with 8+ years of experience in system analysis, design and implementation of web applications using ASP.NET, ASP.NET Core, Web APIs, and cloud platforms such as Azure. I focus on building maintainable, testable and high-performance web applications.</p>
+        <ul class="about-list">
+          <li>Location: Remote</li>
+          <li>Availability: Open for freelance & collaboration</li>
+          <li>Interests: Cloud-native .NET apps, API design, performance tuning</li>
+        </ul>
+      </section>
+
+      <section id="skills" class="container skills">
+        <h2>Skills</h2>
+        <div class="skill-grid">
+          <div class="skill">
+            <div class="skill-label">C# / .NET</div>
+            <div class="skill-bar" data-value="95"><span></span></div>
+          </div>
+          <div class="skill">
+            <div class="skill-label">ASP.NET Core / Web API</div>
+            <div class="skill-bar" data-value="90"><span></span></div>
+          </div>
+          <div class="skill">
+            <div class="skill-label">Azure / Cloud</div>
+            <div class="skill-bar" data-value="85"><span></span></div>
+          </div>
+          <div class="skill">
+            <div class="skill-label">SQL Server / EF</div>
+            <div class="skill-bar" data-value="85"><span></span></div>
+          </div>
+          <div class="skill">
+            <div class="skill-label">Angular</div>
+            <div class="skill-bar" data-value="85"><span></span></div>
+          </div>
+          <div class="skill">
+            <div class="skill-label">JavaScript / TypeScript</div>
+            <div class="skill-bar" data-value="80"><span></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="container projects">
+        <h2>Selected Projects</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Leslie's — Upgrade & Modernization</h3>
+            <p>Upgraded a legacy .NET app to .NET Core 6 and migrated front-end to Angular 15/16, improving performance and maintainability.</p>
+          </article>
+          <article class="card">
+            <h3>Pie Insurance — Enterprise Features</h3>
+            <p>Built RESTful APIs and Angular front-end components, improved CI/CD and automated testing for production reliability.</p>
+          </article>
+          <article class="card">
+            <h3>Tuft & Needle — Cloud Integrations</h3>
+            <p>Implemented Azure-hosted services, WCF-to-REST migrations and performance tuning for high-traffic workloads.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="container contact">
+        <h2>Contact</h2>
+        <p>If you'd like to work together or just say hello, reach out via email or phone.</p>
+        <p><a class="btn" href="mailto:ankita200783@gmail.com">ankita200783@gmail.com</a> &nbsp; <span style="color:var(--muted);margin-left:.5rem">|</span> &nbsp; <span style="color:var(--muted)">720-279-4456</span></p>
+        <p style="margin-top:.6rem"><a class="btn ghost" href="https://www.linkedin.com/in/ankita-lakdawala-9b61b2381/" target="_blank">LinkedIn</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© Ankita — Built with care. Generated by GitHub Copilot</p>
+      </div>
+    </footer>
+
+    <script>
+      // small typewriter for role
+      (function() {
+        const phrases = ['Frontend Developer', 'UI Animator', 'Design System Builder'];
+        const el = document.getElementById('typed');
+        const cursor = document.querySelector('.cursor');
+        let pi = 0, idx = 0, forward = true;
+
+        function tick() {
+          const str = phrases[pi];
+          el.textContent = str.slice(0, idx);
+          if (forward) {
+            if (idx < str.length) idx++; else { forward = false; setTimeout(tick, 1000); return; }
+          } else {
+            if (idx > 0) idx--; else { forward = true; pi = (pi + 1) % phrases.length; }
+          }
+          setTimeout(tick, forward ? 70 : 30);
+        }
+        tick();
+
+        // animate stats
+        const stats = document.querySelectorAll('.num');
+        const statObs = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const target = +el.getAttribute('data-target');
+            let n = 0;
+            const step = Math.max(1, Math.floor(target / 30));
+            const t = setInterval(() => {
+              n += step;
+              if (n >= target) { el.textContent = target; clearInterval(t); }
+              else el.textContent = n;
+            }, 30);
+            statObs.unobserve(el);
+          });
+        }, {threshold: 0.6});
+        stats.forEach(s => statObs.observe(s));
+
+        // animate skills when visible
+        const bars = document.querySelectorAll('.skill-bar');
+        const barObs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              const el = e.target;
+              const v = el.getAttribute('data-value');
+              el.querySelector('span').style.width = v + '%';
+              barObs.unobserve(el);
+            }
+          });
+        }, {threshold: 0.3});
+        bars.forEach(b => barObs.observe(b));
+      })();
+    </script>
+  </body>
+</html>
