@@ -5,7 +5,8 @@
   "description": "Resume parser helper for Ankita profile site",
   "scripts": {
     "parse-resume": "node scripts/parseResume.js",
-    "build": "node scripts/buildStatic.js",
+    "generate-resume": "node scripts/generateResumeHtml.js",
+    "build": "npm run generate-resume && node scripts/buildStatic.js",
     "build:azure": "npm run build"
   },
   "dependencies": {

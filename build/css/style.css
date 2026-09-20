@@ -72,3 +72,45 @@ h2{font-size:1.25rem;margin:0 0 .6rem}
 }
 
 @media (max-width:420px){.container{padding:.75rem}}
+
+/* Reveal on scroll */
+.reveal-on-scroll{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)}
+.reveal-on-scroll.reveal{opacity:1;transform:none}
+
+/* avatar pulse */
+.avatar{position:relative;overflow:visible}
+.avatar::after{content:"";position:absolute;inset:0;border-radius:14px;box-shadow:0 8px 30px rgba(123,97,255,0.12);opacity:0;transform:scale(.9);transition:opacity .6s, transform .6s}
+.avatar:hover::after{opacity:1;transform:scale(1.06)}
+
+/* floating accent */
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+.avatar-wrap{animation:floaty 6s ease-in-out infinite}
+
+/* hero underline animation */
+.name{position:relative}
+.name::after{content:"";position:absolute;left:0;bottom:-6px;height:4px;width:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:4px;transition:width .6s cubic-bezier(.2,.9,.3,1)}
+.name:hover::after{width:60%}
+
+/* timeline */
+.timeline{position:relative;padding-left:1rem;margin-top:1rem}
+.timeline::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent1),var(--accent2));opacity:.14}
+.timeline-item{position:relative;padding:0.6rem 0 0.6rem 1.2rem;border-radius:8px}
+.timeline-item .when{font-size:.85rem;color:var(--muted)}
+.timeline-item .role{font-weight:700}
+.timeline-item .dot{position:absolute;left:-3px;top:12px;width:12px;height:12px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 4px rgba(123,97,255,0.08)}
+
+/* project badges */
+.badges{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.4rem}
+.badge{background:rgba(255,255,255,0.04);color:var(--muted);padding:.25rem .5rem;border-radius:999px;font-size:.8rem;border:1px solid rgba(255,255,255,0.02)}
+
+/* project hover lift */
+.cards .card{will-change:transform;transition:transform .32s ease, box-shadow .32s ease}
+.cards .card:hover{transform:translateY(-10px) scale(1.01);box-shadow:0 26px 56px rgba(2,6,23,0.6)}
+
+/* CTA emphasis */
+.hire{display:inline-flex;align-items:center;gap:.5rem}
+.pulse{display:inline-block;width:10px;height:10px;background:var(--accent2);border-radius:50%;box-shadow:0 0 0 rgba(0,194,255,0.6);animation:ping 1.8s infinite}
+@keyframes ping{0%{transform:scale(.8);opacity:1}70%{transform:scale(2);opacity:0}100%{opacity:0}}
+
+/* header shadow on scroll */
+.site-header.scrolled{box-shadow:0 6px 30px rgba(2,6,23,0.6);backdrop-filter: blur(8px)}

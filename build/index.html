@@ -25,26 +25,14 @@
       <section class="hero">
         <div class="container hero-grid">
           <div class="avatar-wrap">
-            <!-- simple SVG avatar placeholder -->
-            <svg class="avatar" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar">
-              <defs>
-                <linearGradient id="g1" x1="0" x2="1">
-                  <stop offset="0%" stop-color="#7b61ff" />
-                  <stop offset="100%" stop-color="#00c2ff" />
-                </linearGradient>
-              </defs>
-              <rect width="120" height="120" rx="16" fill="url(#g1)" />
-              <g transform="translate(20,18)" fill="#fff">
-                <circle cx="40" cy="28" r="18" opacity="0.95" />
-                <path d="M8 96c0-22 24-40 32-40s32 18 32 40" fill-opacity="0.9" />
-              </g>
-            </svg>
+            <!-- avatar image (replace assets/avatar.svg with a real photo named avatar.jpg/png) -->
+            <img src="assets/avatar.svg" alt="Ankita avatar" class="avatar" width="120" height="120" loading="lazy">
           </div>
 
           <div class="hero-content">
             <h1 class="name">Ankita T Lakdawala</h1>
             <p class="role"><span id="typed"></span><span class="cursor">|</span></p>
-            <p class="lead">8+ years .NET developer experienced in building cloud-ready web applications with .NET Core, Azure, and modern front-end frameworks.</p>
+            <p class="lead">8+ years .NET developer and Senior Tech Lead — architecting cloud-ready web platforms, leading teams, and crafting polished UI experiences.</p>
 
             <div class="stats" aria-hidden>
               <div class="stat">
@@ -61,8 +49,8 @@
               </div>
             </div>
 
-            <p class="cta">
-              <a class="btn" href="#contact">Say hello</a>
+            <p class="cta reveal-on-scroll">
+              <a class="btn hire" href="#contact"><span class="pulse" aria-hidden></span> Hire me</a>
               <a class="btn ghost" href="updated one Ankita-.Net.docx" download>Download Resume</a>
             </p>
           </div>
@@ -71,12 +59,21 @@
 
       <section id="about" class="container about">
         <h2>About</h2>
-        <p>Hi — I'm Ankita T Lakdawala, a .NET developer with 8+ years of experience in system analysis, design and implementation of web applications using ASP.NET, ASP.NET Core, Web APIs, and cloud platforms such as Azure. I focus on building maintainable, testable and high-performance web applications.</p>
+        <p>Hi — I'm Ankita T Lakdawala, a Senior .NET Tech Lead with 8+ years of experience designing, building, and operating web applications. I combine a strong backend engineering background with hands-on UI development to ship delightful, production-ready systems.</p>
         <ul class="about-list">
-          <li>Location: Remote</li>
-          <li>Availability: Open for freelance & collaboration</li>
-          <li>Interests: Cloud-native .NET apps, API design, performance tuning</li>
+          <li>Location: Remote (US)</li>
+          <li>Availability: Open for senior / leadership roles & consulting</li>
+          <li>Interests: Cloud-native .NET apps, system architecture, UI performance</li>
         </ul>
+        <div class="reveal-on-scroll" style="margin-top:.9rem">
+          <h3>What I bring</h3>
+          <ul>
+            <li>Architected migration projects from .NET Framework to .NET Core and modern front-ends (Angular).</li>
+            <li>Led cross-functional teams, established CI/CD, and championed testing and observability.</li>
+            <li>Designed scalable REST APIs and cloud integrations (Azure WebJobs, Queues, SQL Azure).</li>
+            <li>Mentored engineers on clean code, performance and accessibility in UI.</li>
+          </ul>
+        </div>
       </section>
 
       <section id="skills" class="container skills">
@@ -109,20 +106,53 @@
         </div>
       </section>
 
+      <section id="experience" class="container reveal-on-scroll">
+        <h2>Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="dot" aria-hidden></div>
+            <div class="when">Feb 2024 – Till Date</div>
+            <div class="role">.Net Developer — Leslie's</div>
+            <div class="desc">Upgraded legacy apps to .NET Core 6, led front-end modernization with Angular 15/16, implemented Azure-backed queues and CI/CD improvements.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="dot" aria-hidden></div>
+            <div class="when">Oct 2022 – Jan 2024</div>
+            <div class="role">.Net Developer — Pie Insurance</div>
+            <div class="desc">Built RESTful APIs, improved automated testing, and helped drive performance and reliability across services.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="dot" aria-hidden></div>
+            <div class="when">Apr 2021 – Sep 2022</div>
+            <div class="role">.NET Developer — Plumas Bank</div>
+            <div class="desc">Converted legacy ASP apps, supported SPAs with Angular and optimized DB queries for production workloads.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="dot" aria-hidden></div>
+            <div class="when">Jan 2019 – Mar 2021</div>
+            <div class="role">.NET Developer — Tuft and Needle</div>
+            <div class="desc">Integrated Azure services, built microservice layers and improved front-end UX through reusable components.</div>
+          </div>
+        </div>
+      </section>
+
       <section id="projects" class="container projects">
         <h2>Selected Projects</h2>
         <div class="cards">
           <article class="card">
-            <h3>Leslie's — Upgrade & Modernization</h3>
+            <h3><a href="projects/leslies.html">Leslie's — Upgrade & Modernization</a></h3>
             <p>Upgraded a legacy .NET app to .NET Core 6 and migrated front-end to Angular 15/16, improving performance and maintainability.</p>
+            <div class="badges"><span class="badge">.NET Core</span><span class="badge">Angular</span><span class="badge">Azure</span></div>
           </article>
           <article class="card">
-            <h3>Pie Insurance — Enterprise Features</h3>
+            <h3><a href="projects/pie-insurance.html">Pie Insurance — Enterprise Features</a></h3>
             <p>Built RESTful APIs and Angular front-end components, improved CI/CD and automated testing for production reliability.</p>
+            <div class="badges"><span class="badge">APIs</span><span class="badge">Jenkins</span><span class="badge">NUnit</span></div>
           </article>
           <article class="card">
-            <h3>Tuft & Needle — Cloud Integrations</h3>
+            <h3><a href="projects/tuft-and-needle.html">Tuft & Needle — Cloud Integrations</a></h3>
             <p>Implemented Azure-hosted services, WCF-to-REST migrations and performance tuning for high-traffic workloads.</p>
+            <div class="badges"><span class="badge">Azure</span><span class="badge">WCF</span><span class="badge">Microservices</span></div>
           </article>
         </div>
       </section>
@@ -132,6 +162,19 @@
         <p>If you'd like to work together or just say hello, reach out via email or phone.</p>
         <p><a class="btn" href="mailto:ankita200783@gmail.com">ankita200783@gmail.com</a> &nbsp; <span style="color:var(--muted);margin-left:.5rem">|</span> &nbsp; <span style="color:var(--muted)">720-279-4456</span></p>
         <p style="margin-top:.6rem"><a class="btn ghost" href="https://www.linkedin.com/in/ankita-lakdawala-9b61b2381/" target="_blank">LinkedIn</a></p>
+      </section>
+      <section id="testimonials" class="container reveal-on-scroll">
+        <h2>Testimonials</h2>
+        <div class="cards">
+          <article class="card">
+            <p>“Ankita drove the migration project with technical rigor and clear communication. A dependable senior engineer.”</p>
+            <p class="when" style="color:var(--muted);font-size:.85rem;margin-top:.6rem">— Engineering Manager, Leslie's</p>
+          </article>
+          <article class="card">
+            <p>“Delivered measurable performance improvements and stabilized our deployment pipeline.”</p>
+            <p class="when" style="color:var(--muted);font-size:.85rem;margin-top:.6rem">— Product Owner, Pie Insurance</p>
+          </article>
+        </div>
       </section>
     </main>
 
@@ -193,6 +236,23 @@
           });
         }, {threshold: 0.3});
         bars.forEach(b => barObs.observe(b));
+      })();
+
+      // reveal on scroll + header scroll effects + project card stagger
+      (function(){
+        const reveal = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); reveal.unobserve(e.target); } });
+        },{threshold:0.15});
+        document.querySelectorAll('.reveal-on-scroll').forEach(el=>reveal.observe(el));
+
+        // header shadow on scroll
+        const header = document.querySelector('.site-header');
+        function onScroll(){ if(window.scrollY>20) header.classList.add('scrolled'); else header.classList.remove('scrolled'); }
+        window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+        // stagger project cards
+        const cards = document.querySelectorAll('.cards .card');
+        cards.forEach((c,i)=>{ c.style.transitionDelay = (i*80)+'ms'; reveal.observe(c); });
       })();
     </script>
   </body>
