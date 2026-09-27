@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects API Demo</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#f6f8fb;margin:0;padding:1rem}
+    .container{max-width:900px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .card{background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
+    .meta{font-size:.85rem;color:#666}
+    .title{font-weight:700;margin:6px 0}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Projects</h1>
+    <p id="status">Loading...</p>
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <script>
+    async function load(){
+      const res = await fetch('/api/projects');
+      const grid = document.getElementById('grid');
+      const status = document.getElementById('status');
+      if(!res.ok){ status.textContent = 'Failed to load: ' + res.statusText; return; }
+      const data = await res.json();
+      if(!data || data.length===0){ status.textContent = 'No projects found.'; return; }
+      status.textContent = '';
+      data.forEach(p=>{
+        const el = document.createElement('div'); el.className='card';
+        const title = document.createElement('div'); title.className='title'; title.textContent = p.ProjectName || 'Untitled';
+        const meta = document.createElement('div'); meta.className='meta'; meta.textContent = (p.ProjectStartDate? new Date(p.ProjectStartDate).toLocaleDateString() : '') + (p.ProjectEndDate? ' — ' + new Date(p.ProjectEndDate).toLocaleDateString() : '');
+        const desc = document.createElement('div'); desc.textContent = p.ProjectDescription || '';
+        el.appendChild(title); el.appendChild(meta); el.appendChild(desc);
+        grid.appendChild(el);
+      });
+    }
+    load().catch(e=>{document.getElementById('status').textContent = e.message});
+  </script>
+</body>
+</html>
