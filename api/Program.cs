@@ -1,5 +1,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Azure.Core;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,22 @@ app.MapGet("/api/projects", async (IConfiguration config) =>
     try
     {
         await using var conn = new SqlConnection(connStr);
+
+        // If the connection string requests Azure AD Default authentication, acquire an access token using DefaultAzureCredential
+        if (connStr.Contains("Authentication=Active Directory Default", StringComparison.OrdinalIgnoreCase))
+        {
+            try
+            {
+                var cred = new DefaultAzureCredential();
+                var token = await cred.GetTokenAsync(new TokenRequestContext(new[] { "https://database.windows.net/.default" }));
+                conn.AccessToken = token.Token;
+            }
+            catch (Exception tokenEx)
+            {
+                return Results.Problem($"Failed to acquire access token for Azure SQL: {tokenEx.Message}");
+            }
+        }
+
         await conn.OpenAsync();
         var cmd = conn.CreateCommand();
         cmd.CommandText = "SELECT ProjectID, ProjectName, ProjectDescription, ProjectStartDate, ProjectEndDate FROM dbo.Projects";
