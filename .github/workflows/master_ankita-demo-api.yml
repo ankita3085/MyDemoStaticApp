@@ -58,26 +58,38 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_744C34887A2D4262AB5587BCE97A55E9 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_616B657578FA403BB0BDF86905FD069A }}
 
-      - name: Set connection string app setting
-        env:
-          APP_NAME: 'ankita-demo-api-azd9cndpebgsdpbz'
+      - name: Set connection string app setting (hardcoded)
         run: |
-          if [ -z "${{ secrets.AZURE_RESOURCE_GROUP }}" ] || [ -z "${{ secrets.DB_CONN_STRING }}" ]; then
-            echo "Missing AZURE_RESOURCE_GROUP or DB_CONN_STRING secret. Please add both to repository secrets.";
-            exit 1;
-          fi
-          az webapp config appsettings set --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --settings "ConnectionStrings__DefaultConnection=${{ secrets.DB_CONN_STRING }}"
+          APP_NAME='ankita-demo-api-azd9cndpebgsdpbz'
+          RG='Ankita-demo-rg'
+          echo "Setting ConnectionStrings__DefaultConnection on $APP_NAME in resource group $RG"
+          az webapp config appsettings set --name "$APP_NAME" --resource-group "$RG" --settings 'ConnectionStrings__DefaultConnection=Server=tcp:ankita-server.database.windows.net,1433;Initial Catalog=ankita-demo-db;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=Active Directory Default;'
 
-      - name: Enable system-assigned managed identity on Web App
-        env:
-          APP_NAME: 'ankita-demo-api-azd9cndpebgsdpbz'
+      - name: Enable system-assigned managed identity on Web App (hardcoded)
         run: |
+          APP_NAME='ankita-demo-api-azd9cndpebgsdpbz'
+          RG='Ankita-demo-rg'
           echo "Enabling system-assigned managed identity for $APP_NAME"
-          az webapp identity assign --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
+          az webapp identity assign --name "$APP_NAME" --resource-group "$RG"
           echo "Managed identity assigned. Fetching identity details..."
-          az webapp identity show --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --query "principalId" -o tsv | awk '{print "PRINCIPAL_ID="$0}' > principal.env
-          az webapp identity show --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --query "principalId" -o tsv
+          az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv | awk '{print "PRINCIPAL_ID="$0}' > principal.env
+          az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv
           echo "Stored principalId in principal.env (not a secret)."
+
+      - name: Attach user-assigned managed identity and set AZURE_CLIENT_ID
+        run: |
+          APP_NAME='ankita-demo-api-azd9cndpebgsdpbz'
+          RG='Ankita-demo-rg'
+          UA_NAME='oidc-msi-834c'
+          UA_CLIENT_ID='5d515563-ef72-4da7-9a46-dfeedbefa182'
+          echo "Looking up user-assigned identity resource id for $UA_NAME in $RG"
+          ID=$(az identity show -g "$RG" -n "$UA_NAME" --query id -o tsv)
+          if [ -z "$ID" ]; then echo "User-assigned identity $UA_NAME not found in resource group $RG"; exit 1; fi
+          echo "Attaching user-assigned identity $ID to web app $APP_NAME"
+          az webapp identity assign --identities "$ID" --name "$APP_NAME" --resource-group "$RG"
+          echo "Setting AZURE_CLIENT_ID app setting so DefaultAzureCredential uses the user-assigned identity"
+          az webapp config appsettings set --name "$APP_NAME" --resource-group "$RG" --settings "AZURE_CLIENT_ID=$UA_CLIENT_ID"
+          echo "User-assigned identity attached and AZURE_CLIENT_ID set."
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
