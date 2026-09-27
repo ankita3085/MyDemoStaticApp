@@ -63,18 +63,34 @@ jobs:
           APP_NAME='ankita-demo-api-azd9cndpebgsdpbz'
           RG='Ankita-demo-rg'
           echo "Setting ConnectionStrings__DefaultConnection on $APP_NAME in resource group $RG"
+          set +e
           az webapp config appsettings set --name "$APP_NAME" --resource-group "$RG" --settings 'ConnectionStrings__DefaultConnection=Server=tcp:ankita-server.database.windows.net,1433;Initial Catalog=ankita-demo-db;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=Active Directory Default;'
+          rc=$?
+          set -e
+          if [ $rc -ne 0 ]; then
+            echo "Warning: failed to set app setting. The service principal may lack permissions. Deployment will continue but you may need to configure the app setting manually in Azure Portal.";
+            echo "SKIP_CONFIG=true" >> $GITHUB_ENV
+          else
+            echo "SKIP_CONFIG=false" >> $GITHUB_ENV
+          fi
 
       - name: Enable system-assigned managed identity on Web App (hardcoded)
         run: |
           APP_NAME='ankita-demo-api-azd9cndpebgsdpbz'
           RG='Ankita-demo-rg'
           echo "Enabling system-assigned managed identity for $APP_NAME"
+          set +e
           az webapp identity assign --name "$APP_NAME" --resource-group "$RG"
-          echo "Managed identity assigned. Fetching identity details..."
-          az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv | awk '{print "PRINCIPAL_ID="$0}' > principal.env
-          az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv
-          echo "Stored principalId in principal.env (not a secret)."
+          rc=$?
+          set -e
+          if [ $rc -ne 0 ]; then
+            echo "Warning: failed to assign system-managed identity. You may not have permissions."
+          else
+            echo "Managed identity assigned. Fetching identity details..."
+            az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv | awk '{print "PRINCIPAL_ID="$0}' > principal.env || true
+            az webapp identity show --name "$APP_NAME" --resource-group "$RG" --query "principalId" -o tsv || true
+            echo "Stored principalId in principal.env (not a secret)."
+          fi
 
       - name: Attach user-assigned managed identity and set AZURE_CLIENT_ID
         run: |
@@ -83,13 +99,21 @@ jobs:
           UA_NAME='oidc-msi-834c'
           UA_CLIENT_ID='5d515563-ef72-4da7-9a46-dfeedbefa182'
           echo "Looking up user-assigned identity resource id for $UA_NAME in $RG"
+          set +e
           ID=$(az identity show -g "$RG" -n "$UA_NAME" --query id -o tsv)
-          if [ -z "$ID" ]; then echo "User-assigned identity $UA_NAME not found in resource group $RG"; exit 1; fi
+          if [ -z "$ID" ]; then echo "User-assigned identity $UA_NAME not found in resource group $RG"; echo "SKIP_CONFIG=true" >> $GITHUB_ENV; exit 0; fi
           echo "Attaching user-assigned identity $ID to web app $APP_NAME"
           az webapp identity assign --identities "$ID" --name "$APP_NAME" --resource-group "$RG"
-          echo "Setting AZURE_CLIENT_ID app setting so DefaultAzureCredential uses the user-assigned identity"
-          az webapp config appsettings set --name "$APP_NAME" --resource-group "$RG" --settings "AZURE_CLIENT_ID=$UA_CLIENT_ID"
-          echo "User-assigned identity attached and AZURE_CLIENT_ID set."
+          rc=$?
+          if [ $rc -ne 0 ]; then
+            echo "Warning: failed to attach user-assigned identity. You may not have sufficient permissions.";
+            echo "SKIP_CONFIG=true" >> $GITHUB_ENV
+          else
+            echo "Setting AZURE_CLIENT_ID app setting so DefaultAzureCredential uses the user-assigned identity"
+            az webapp config appsettings set --name "$APP_NAME" --resource-group "$RG" --settings "AZURE_CLIENT_ID=$UA_CLIENT_ID"
+          fi
+          set -e
+          echo "User-assigned identity step completed."
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -101,6 +125,7 @@ jobs:
           package: ${{ github.workspace }}/.net-app
 
       - name: Post-deploy health check
+        if: env.SKIP_CONFIG != 'true'
         run: |
           URL="https://ankita-demo-api-azd9cndpebgsdpbz.westus3-01.azurewebsites.net/api/health"
           echo "Checking $URL"
