@@ -23,10 +23,12 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Build with dotnet
+      - name: Build api project
+        working-directory: ./api
         run: dotnet build --configuration Release
 
-      - name: dotnet publish
+      - name: dotnet publish api
+        working-directory: ./api
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
@@ -47,6 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
+          path: ./.net-app
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -55,11 +58,47 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_744C34887A2D4262AB5587BCE97A55E9 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_616B657578FA403BB0BDF86905FD069A }}
 
+      - name: Set connection string app setting
+        env:
+          APP_NAME: 'ankita-demo-api-azd9cndpebgsdpbz'
+        run: |
+          if [ -z "${{ secrets.AZURE_RESOURCE_GROUP }}" ] || [ -z "${{ secrets.DB_CONN_STRING }}" ]; then
+            echo "Missing AZURE_RESOURCE_GROUP or DB_CONN_STRING secret. Please add both to repository secrets.";
+            exit 1;
+          fi
+          az webapp config appsettings set --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --settings "ConnectionStrings__DefaultConnection=${{ secrets.DB_CONN_STRING }}"
+
+      - name: Enable system-assigned managed identity on Web App
+        env:
+          APP_NAME: 'ankita-demo-api-azd9cndpebgsdpbz'
+        run: |
+          echo "Enabling system-assigned managed identity for $APP_NAME"
+          az webapp identity assign --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}"
+          echo "Managed identity assigned. Fetching identity details..."
+          az webapp identity show --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --query "principalId" -o tsv | awk '{print "PRINCIPAL_ID="$0}' > principal.env
+          az webapp identity show --name "$APP_NAME" --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" --query "principalId" -o tsv
+          echo "Stored principalId in principal.env (not a secret)."
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'ankita-demo-api'
+          # use the actual App Service name (resource name) you've created
+          app-name: 'ankita-demo-api-azd9cndpebgsdpbz'
           slot-name: 'Production'
-          package: .
+          package: ${{ github.workspace }}/.net-app
+
+      - name: Post-deploy health check
+        run: |
+          URL="https://ankita-demo-api-azd9cndpebgsdpbz.westus3-01.azurewebsites.net/api/health"
+          echo "Checking $URL"
+          for i in {1..12}; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            if [ "$status" = "200" ]; then
+              echo "Health check passed (status 200)"; exit 0
+            fi
+            echo "Attempt $i: status=$status; waiting..."
+            sleep 10
+          done
+          echo "Health check failed after retries"; exit 1
           
